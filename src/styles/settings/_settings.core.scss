@@ -1,0 +1,90 @@
+///* ========================================================================
+//   #CORE
+//   ======================================================================== */
+
+// This core file sets up the most important setup variables. They
+// underpin a lot of how the framework functions and should be modified and
+// preconfigured with caution.
+
+// Baseline grid lines height.
+// Every spacing metric should be based on this.
+
+$global-baseline: 8px !default;
+
+// How many grid lines should our spacing unit variants span?
+// Each value should be an unitless integer.
+
+$global-spacing-unit-factor-tiny: 1 !default; // 8px
+$global-spacing-unit-factor-small: 2 !default; // 16px
+$global-spacing-unit-factor: 4 !default; // 32px
+$global-spacing-unit-factor-large: 8 !default; // 64px
+$global-spacing-unit-factor-huge: 16 !default; // 128px
+
+// Spacing values are determined based on your project’s global baseline grid.
+// It is not recommended that you modify these following variables
+// (it can break your vertical rhythm), but if you need to, you can.
+// TODO: Consolidate the lists bellow (Good example: https://polaris.shopify.com/design/spacing)
+
+$global-spacing-unit: $global-baseline * $global-spacing-unit-factor !default; // 32px
+$global-spacing-unit-tiny: $global-baseline * $global-spacing-unit-factor-tiny !default; // 8px
+$global-spacing-unit-small: $global-baseline * $global-spacing-unit-factor-small !default; // 16px
+$global-spacing-unit-large: $global-baseline * $global-spacing-unit-factor-large !default; // 64px
+$global-spacing-unit-huge: $global-baseline * $global-spacing-unit-factor-huge !default; // 128px
+
+// The following list is based on the Fibonacci sequence
+$global-spacing-unit-xxs:  1px * $global-spacing-unit-factor !default; // 4px
+$global-spacing-unit-xs:   2px * $global-spacing-unit-factor !default; // 8px
+$global-spacing-unit-sm:   3px * $global-spacing-unit-factor !default; // 12px
+$global-spacing-unit-md:   5px * $global-spacing-unit-factor !default; // 20px
+$global-spacing-unit-lg:   8px * $global-spacing-unit-factor !default; // 32px
+$global-spacing-unit-xl:  13px * $global-spacing-unit-factor !default; // 52px
+$global-spacing-unit-xxl: 21px * $global-spacing-unit-factor !default; // 84px
+
+// Base typographical styles and baseline grid. You need to define these values
+// in pixels: they will be converted to more appropriate units.
+
+$global-font-size: 16px !default;
+// $global-line-height:  24px !default;
+$global-line-height: $global-spacing-unit !default; // Evaluates to 8 (base) * 4 (default spacing factor) = 32px
+
+// Check that the chosen font rules are pixel numbers.
+@each $_font-globals in $global-font-size $global-line-height {
+	@if (type-of($_font-globals) == number) {
+		@if (unit($_font-globals) != 'px') {
+			@error "`#{$_font-globals}` needs to be a pixel value.";
+		}
+	} @else {
+		@error "`#{$_font-globals}` needs to be a number.";
+	}
+}
+
+// Check that the chosen font rules are pixel numbers.
+@each $_font-globals in $global-font-size $global-line-height {
+	@if (type-of($_font-globals) == number) {
+		@if (unit($_font-globals) != 'px') {
+			@error "`#{$_font-globals}` needs to be a pixel value.";
+		}
+	} @else {
+		@error "`#{$_font-globals}` needs to be a number.";
+	}
+}
+
+// Check that the chosen size factors are unitless, integer numbers.
+@each $_spacing-unit in
+	$global-spacing-unit-factor-tiny
+	$global-spacing-unit-factor-small
+	$global-spacing-unit-factor-large
+	$global-spacing-unit-factor-huge
+{
+	@if (type-of($_spacing-unit) == number) {
+		@if (unitless($_spacing-unit) == false) {
+			@error "`#{$_spacing-unit}` needs to be unitless.";
+		}
+
+		@if ($_spacing-unit != ceil($_spacing-unit)) {
+			@error "`#{$_spacing-unit}` needs to be an integer.";
+		}
+	} @else {
+		@error "`#{$_spacing-unit}` needs to be a number.";
+	}
+}

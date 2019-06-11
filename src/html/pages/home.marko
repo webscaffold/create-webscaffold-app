@@ -1,0 +1,21 @@
+import App from './../app.marko';
+import AppShell from './../layouts/_app-shell.marko';
+
+<${App} ...data.app>
+<@page>
+	<${AppShell}>
+	<@body>
+
+	<main id="app">
+		<header>
+			articles | tutorials | tweets | code snippets
+		</header>
+		<section class="c-posts">
+			Loading...
+		</section>
+	</main>
+
+	</@body>
+	</>
+</@page>
+</>

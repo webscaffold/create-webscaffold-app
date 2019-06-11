@@ -1,0 +1,27 @@
+<!-- http://www.responsivebreakpoints.com/  -->
+<!-- Resolution:		200 - 2048 -->
+<!-- size step:			32 -->
+<!-- Maximum images:	8 -->
+<!-- Retina resolution:	true -->
+<!-- <include('../partials/_picture.marko') image="/images/test" alt=""/> -->
+<picture>
+	<source
+		sizes="(max-width: 2048px) 100vw, 2048px"
+		srcset="
+			${input.image}_w_721.webp 721w,
+			${input.image}_w_1325.webp 1325w,
+			${input.image}_w_1775.webp 1775w,
+			${input.image}_w_1987.webp 1987w,
+			${input.image}_w_2048.webp 2048w"
+		type="input.image/webp">
+	<img
+		sizes="(max-width: 2048px) 100vw, 2048px"
+		srcset=`
+			${input.image}_w_721.jpg 721w,
+			${input.image}_w_1325.jpg 1325w,
+			${input.image}_w_1775.jpg 1775w,
+			${input.image}_w_1987.jpg 1987w,
+			${input.image}_w_2048.jpg 2048w`
+		src=`${input.image}.jpg`
+		alt=`${input.alt}`>
+</picture>

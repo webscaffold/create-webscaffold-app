@@ -1,0 +1,64 @@
+///* ========================================================================
+//   #GLOBAL
+//   ======================================================================== */
+
+// The global settings file contains any project-wide variables; things that
+// need to be made available to the entire codebase.
+
+// Typography
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+	'Segoe UI Symbol' !default;
+$font-family-serif: Georgia, 'Times New Roman', Times, serif !default;
+$font-family-monospace: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !default;
+$font-family-base: $font-family-sans-serif !default;
+
+// Standardise some UI treatments.
+$global-text-color: #333 !default;
+$global-background-color: #fff !default;
+$global-radius: 3px !default;
+$global-transition: all 300ms ease-in-out !default;
+
+// Z-index layers
+$z-layers: (
+	'modal-type': (
+		'modal-tooltip': 1070,
+		'modal-close': 1060,
+		'modal-content': 1050,
+		'modal': 1000,
+	),
+	'nav': 600,
+	'tooltip': 300,
+	'above': 100,
+	'default': 1,
+	'below': -100,
+	'seabed': -10000,
+);
+
+// Sass MQ settings
+// https://sass-mq.github.io/sass-mq/
+$mq-base-font-size: $global-font-size;
+$mq-show-breakpoints: (); // This is needed for Sass to know it exists before it sets the one bellow. Dunno why.
+@if (config(debug) == true) {
+	$mq-show-breakpoints: (md, lg, xl);
+}
+
+// Sass MQ settings
+// https://sass-mq.github.io/sass-mq/
+$mq-show-breakpoints: (); // This is needed for Sass to know it exists before it sets the one bellow. Dunno why.
+@if (config(debug) == true) {
+	$mq-show-breakpoints: (md, lg, xl);
+}
+
+$breakpoints: (
+	xl: 1440px,
+	lg: 980px,
+	md: 740px,
+	sm: 480px
+) !default;
+
+$mq-breakpoints: (
+	xl: map-get($breakpoints, xl),
+	lg: map-get($breakpoints, lg),
+	md: map-get($breakpoints, md),
+	sm: map-get($breakpoints, sm)
+) !default;

@@ -1,0 +1,22 @@
+import HeadContent from './includes/head-content.marko';
+import BodyBottomContent from './includes/body-bottom-content.marko';
+import BrowserSync from './includes/browser-sync.marko';
+
+<!doctype html>
+<html class="no-js" lang="">
+	<head>
+		<${HeadContent} ...data/>
+	</head>
+	<body>
+		<!-- Express app renders `/pages/{page}.marko` files, each page gets injected here via nested attributes -->
+		<${input.page}/>
+
+		<!-- Body bottom content (js runtime, js scripts, service worker, analytics, etc.) -->
+		<${BodyBottomContent} ...data/>
+
+		<if(data.isProd === false)>
+		<${BrowserSync} ...data.browserSync/>
+		</if>
+		<!-- Built with love using RaduM's ES6 Web app boilerplate -->
+	</body>
+</html>
