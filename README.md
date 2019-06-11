@@ -1,5 +1,9 @@
 [![David](https://img.shields.io/david/radum/webapp-boilerplate.svg?style=flat-square)](https://david-dm.org/radum/webapp-boilerplate) [![David](https://img.shields.io/david/dev/radum/webapp-boilerplate.svg?style=flat-square)](https://david-dm.org/radum/webapp-boilerplate/#info=devDependencies)
 
+<div align="center">
+  <img src="docs/blueprint.svg" alt="Create Web Scaffold App" height="200" />
+</div>
+
 ![Logo of the project](./images/logo.sample.png)
 
 # ES6 Progressive Web App (PWA) boilerplate using Webpack, Express.js and more
