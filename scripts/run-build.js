@@ -1,6 +1,6 @@
 const path = require('path');
-const reporter = require('./lib/reporter');
-const clean = require('./tasks/clean');
+const { reporter } = require('@webscaffold/task-core');
+const clean = require('@webscaffold/task-clean');
 const copyStatic = require('./tasks/copy');
 const copyExtra = require('./tasks/copy-extra');
 const compileCSS = require('./tasks/css-compiler');

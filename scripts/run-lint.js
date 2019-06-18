@@ -1,4 +1,4 @@
-const reporter = require('./lib/reporter');
+const { reporter } = require('@webscaffold/task-core');
 const stylesLint = require('./tasks/styles-lint');
 const jsLint = require('./tasks/js-lint');
 
