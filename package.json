@@ -82,7 +82,7 @@
     "@webscaffold/task-css-compiler": "0.1.0-alpha.1",
     "@webscaffold/task-js-compiler": "0.0.1-alpha.0",
     "assets-webpack-plugin": "3.9.10",
-    "ava": "2.1.0",
+    "ava": "2.2.0",
     "babel-loader": "8.0.6",
     "babel-plugin-console": "0.2.1",
     "browser-sync": "2.26.7",
