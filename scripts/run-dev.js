@@ -1,8 +1,11 @@
+'use strict';
+
+const fs = require('fs');
 const path = require('path');
 const Emittery = require('emittery');
 const { reporter } = require('@webscaffold/task-core');
 const clean = require('@webscaffold/task-clean');
-// const copyStatic = require('./tasks/copy');
+const copyStatic = require('@webscaffold/task-copy');
 // const compileCSS = require('./tasks/css-compiler');
 // const compileJS = require('./tasks/js-compiler');
 // // const imageResize = require('./tasks/image-resize');
@@ -13,24 +16,27 @@ const { config } = require('./config');
 
 /**
  * Run the dev task, compile css and js and run the local server
+ *
  * @param {Object} options - Task options object
  * @returns {Promise} - Promise object
  */
-async function startDev(options) {
+async function runDev(options) {
 	const eventBus = new Emittery();
+	const appDirectory = fs.realpathSync(process.cwd());
+	const resolvePath = relativePath => path.resolve(appDirectory, relativePath);
+
 
 	reporter('dev').emit('log', 'starting dev');
 
 	await clean([`${config.paths.buildPath}/*`], { reporter });
-	// await copyStatic({
-	// 	taskName: 'copy:static',
-	// 	src: 'static/**/*',
-	// 	dest: path.join(process.cwd(), config.paths.buildPath),
-	// 	cpy: {
-	// 		cwd: path.join(process.cwd(), config.paths.srcPath),
-	// 		parents: true
-	// 	}
-	// });
+
+	await copyStatic('static/**/*', resolvePath(config.paths.buildPath), {
+		taskName: 'copy:static',
+		cpy: {
+			cwd: resolvePath(config.paths.srcPath),
+			parents: true
+		}
+	});
 
 	// await Promise.all([
 	// 	compileCSS(config.paths.stylesEntryPoint, config.paths.stylesOutputDest, {
@@ -70,4 +76,4 @@ async function startDev(options) {
 	// await new watcher(['src/server/**/*.js'], { label: 'server files' }, () => runServer({ inspect: options.nodeInspect }));
 }
 
-module.exports = startDev;
+module.exports = runDev;
