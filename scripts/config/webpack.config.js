@@ -1,4 +1,5 @@
 /* eslint prefer-destructuring: 0, complexity: 1 */
+'use strict';
 
 const path = require('path');
 const webpack = require('webpack');
@@ -128,8 +129,17 @@ module.exports = function (config) {
                 		// It enables caching results in ./node_modules/.cache/babel-loader/
                 		// directory for faster rebuilds.
 						cacheDirectory: true,
-						cacheCompression: config.isProd,
-                		compact: config.isProd
+						// We are bundling 2 different versions of our JS for modern and legacy.
+						// The outputed code is driven by babel via browserlist and the namespaces in `.browserslistrc`.
+						// Our webpack compiler runs twice for each instance, each time we manually change BROWSERSLIST_ENV.
+						// Babel will run twice one after another and so the babel-loader cache needs to be invalidated based on that.
+						// The babel config file uses `api.cache.invalidate` on its own to do the same thing. If we don't do this the
+						// loader output will be cached and the preset-env preset will not work properly outputing the same result.
+						// Another way of doing this will be not to use the babel config file and pass the config here.
+						cacheIdentifier: process.env.BROWSERSLIST_ENV,
+						// Each Babel transform output will be compressed with Gzip.
+						// If you transpile thousands of files might be better to turn this off.
+						cacheCompression: true
 					},
 				},
 
@@ -337,8 +347,7 @@ module.exports = function (config) {
 				path: path.resolve(cwd, config.paths.buildPath),
 				prettyPrint: true
 			})
-		],
-		BROWSERSLIST_ENV: 'modern'
+		]
 	});
 
 	// Legacy config that ouputs assets for old browsers (ie. IE11).
@@ -357,8 +366,7 @@ module.exports = function (config) {
 				path: path.resolve(cwd, config.paths.buildPath),
 				prettyPrint: true
 			})
-		],
-		BROWSERSLIST_ENV: 'legacy'
+		]
 	});
 
 	return {
