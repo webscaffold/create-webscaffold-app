@@ -14,7 +14,7 @@ module.exports = function(api) {
 				modules: false,
 				useBuiltIns: 'entry',
 				// Don't log anything on the console
-				debug: true,
+				debug: false,
 				// Set the corejs version we are using to avoid warnings in console
 				// This will need to change once we upgrade to corejs@3
 				corejs: 3,

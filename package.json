@@ -36,7 +36,7 @@
     "analyze:bundle-buddy": "npx bundle-buddy build/static/scripts/*.map",
     "analyze:slow-deps": "npx slow-deps",
     "deploy:heroku": "git subtree push --prefix build heroku master",
-    "test": "ava --verbose"
+    "test": "ava"
   },
   "dependencies": {
     "@babel/runtime": "7.5.2",
