@@ -76,7 +76,7 @@
     "@babel/preset-env": "7.5.2",
     "@radum/eslint-config": "0.4.1",
     "@radum/stylelint-config": "0.3.0",
-    "@webscaffold/task-core": "0.1.0-alpha.5",
+    "@webscaffold/task-core": "0.1.0-alpha.6",
     "@webscaffold/task-copy": "0.1.0-alpha.4",
     "@webscaffold/task-clean": "0.1.0-alpha.6",
     "@webscaffold/task-css-compiler": "0.1.0-alpha.1",
