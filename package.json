@@ -80,7 +80,7 @@
     "@webscaffold/task-copy": "0.1.0-alpha.4",
     "@webscaffold/task-clean": "0.1.0-alpha.6",
     "@webscaffold/task-css-compiler": "0.1.0-alpha.2",
-    "@webscaffold/task-js-compiler": "0.1.0-alpha.0",
+    "@webscaffold/task-js-compiler": "0.1.0-alpha.1",
     "assets-webpack-plugin": "3.9.10",
     "ava": "2.2.0",
     "babel-loader": "8.0.6",
