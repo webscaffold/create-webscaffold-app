@@ -12,7 +12,7 @@ const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const DashboardPlugin = require('webpack-dashboard/plugin');
-// const SizePlugin = require('size-plugin');
+const SizePlugin = require('size-plugin');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const aliases = require('./aliases.config');
 const paths = require('./paths');
@@ -277,7 +277,7 @@ module.exports = function (config) {
 
 			// Prints the gzipped sizes of your webpack assets and the changes since the last build.
 			// https://github.com/GoogleChromeLabs/size-plugin
-			// new SizePlugin(),
+			new SizePlugin(),
 
 			...(config.isDebug
 				? [
