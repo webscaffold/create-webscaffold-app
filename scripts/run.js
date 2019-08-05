@@ -1,4 +1,6 @@
-#!/usr/bin/env node
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable no-console */
+'use strict';
 
 const figures = require('figures');
 const chalk = require('chalk');
@@ -11,7 +13,7 @@ const runDev = require('./run-dev');
 
 loadEnv(process.env.NODE_ENV);
 
-const catchErrors = fn => (...args) => fn(...args).catch(error => {
+const catchErrors = (fn) => (...args) => fn(...args).catch((error) => {
 	const stackUtils = new StackUtils({
 		cwd: process.cwd(),
 		internals: StackUtils.nodeInternals()
