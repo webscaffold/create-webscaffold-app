@@ -46,13 +46,13 @@ switch (cli.input[0]) {
 		catchErrors(runDev)({
 			isDebug: !cli.flags.release,
 			nodeInspect: cli.flags.inspect,
-			logLevel: cli.flags.verbose ? 3 : 8
+			logLevel: cli.flags.verbose
 		});
 		break;
 	case 'build':
 		// catchErrors(runBuild)({
 		// 	isDebug: !cli.flags.release,
-		// 	logLevel: cli.flags.verbose ? 3 : 8
+		// 	logLevel: cli.flags.verbose
 		// });
 		break;
 	case 'lint':
@@ -64,7 +64,7 @@ switch (cli.input[0]) {
 	default:
 		// catchErrors(runBuild)({
 		// 	isDebug: !cli.flags.release,
-		// 	logLevel: cli.flags.verbose ? 3 : 8
+		// 	logLevel: cli.flags.verbose
 		// });
 		break;
 }

@@ -42,6 +42,10 @@ const runServerTask = (options) => runServer('src/server/server.js', { inspect: 
  * @returns {Promise} - Promise object
  */
 module.exports = async function(options) {
+	if (options.logLevel) {
+		process.env.WEBSCAFFOLD_LOG_LEVEL = 'debug';
+	}
+
 	reporter('dev').emit('log', 'starting dev');
 
 	await clean([`${resolvePath(config.paths.buildPath)}/*`], { reporter });

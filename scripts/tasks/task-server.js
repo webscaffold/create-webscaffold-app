@@ -13,7 +13,7 @@ let pending = true;
 // and the entire process will be stuck at this server run.
 
 // const RUNNING_REGEXP = /Server is running at (http|https):\/\/(.*?)/;
-const RUNNING_REGEXP = /Server is running at https:\/\/(.*?)/;
+const RUNNING_REGEXP = /Server is running at https?:\/\/(.*?)/;
 
 function runServer(entryPoint, options = { inspect: false }) {
 	const taskName = options.label || 'express-server';

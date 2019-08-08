@@ -1,3 +1,5 @@
+'use strict';
+
 const meow = require('meow');
 
 const cli = meow(`

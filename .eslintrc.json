@@ -4,6 +4,13 @@
     "@radum/eslint-config"
   ],
   "rules": {
-    "filenames/match-exported": "off"
+    "filenames/match-exported": "off",
+    "unicorn/prevent-abbreviations": ["error",
+      {
+        "whitelist": {
+          "run-dev": true
+        }
+      }
+    ]
   }
 }
