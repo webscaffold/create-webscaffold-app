@@ -26,7 +26,6 @@
   "scripts": {
     "taskrunner": "cross-env NODE_ENV=development node scripts/run.js",
     "dev": "cross-env NODE_ENV=development node scripts/run.js dev",
-    "dev:inspect": "cross-env NODE_ENV=development node --inspect scripts/run.js dev",
     "dev:verbose": "npm run dev -- --verbose",
     "dev:analyze": "npm run dev -- --analyze",
     "dev:lint": "npm run taskrunner -- lint",
@@ -35,9 +34,8 @@
     "build:analyze": "npm run build -- --analyze",
     "analyze:bundle-buddy": "npx bundle-buddy build/static/scripts/*.map",
     "analyze:slow-deps": "npx slow-deps",
-    "deploy:heroku": "git subtree push --prefix build heroku master",
     "type-check": "tsc --noEmit",
-    "test": "ava"
+    "test:scripts": "ava"
   },
   "dependencies": {
     "@babel/runtime": "7.5.5",
@@ -92,6 +90,7 @@
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "chokidar": "3.0.2",
     "clean-css": "4.2.1",
+    "compression-webpack-plugin": "^3.0.0",
     "core-js": "3.2.0",
     "cpy": "7.3.0",
     "cross-env": "5.2.0",
@@ -137,7 +136,6 @@
     "timestamp": "0.0.1",
     "webpack": "4.39.1",
     "webpack-bundle-analyzer": "3.4.1",
-    "webpack-dashboard": "3.0.7",
     "webpack-dev-middleware": "3.7.0",
     "webpack-hot-middleware": "2.25.0",
     "webpack-monitor": "1.0.14",

@@ -10,8 +10,8 @@ const { GenerateSW } = require('workbox-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const DashboardPlugin = require('webpack-dashboard/plugin');
 const SizePlugin = require('size-plugin');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const aliases = require('./aliases.config');
@@ -291,6 +291,25 @@ module.exports = function (config) {
 					// a plugin that prints an error when you attempt to do this.
 					// See https://github.com/facebookincubator/create-react-app/issues/240
 					new CaseSensitivePathsPlugin(),
+					// Prepare compressed versions of assets to serve them with Content-Encoding.
+					new CompressionPlugin({
+						algorithm: 'gzip',
+						filename: '[path].gz[query]',
+						test: /\.(js|mjs|css|html|svg)$/,
+						compressionOptions: { level: 9 },
+						threshold: 10240,
+						minRatio: 0.8,
+						deleteOriginalAssets: false,
+					}),
+					new CompressionPlugin({
+						filename: '[path].br[query]',
+						algorithm: 'brotliCompress',
+						test: /\.(js|mjs|css|html|svg)$/,
+						compressionOptions: { level: 11 },
+						threshold: 10240,
+						minRatio: 0.8,
+						deleteOriginalAssets: false,
+					})
 				]
 				: [
 					// NamedModulesPlugin leaks path (suited for DEV)
@@ -304,8 +323,9 @@ module.exports = function (config) {
 			...(!config.isAnalyze
 				? []
 				: [
-					new BundleAnalyzerPlugin(),
-					new DashboardPlugin()
+					new BundleAnalyzerPlugin({
+						analyzerPort: 'auto'
+					})
 				]),
 		],
 

@@ -1,53 +1,62 @@
+'use strict';
+
+const fs = require('fs');
 const path = require('path');
 const { reporter } = require('@webscaffold/task-core');
 const clean = require('@webscaffold/task-clean');
-const copyStatic = require('./tasks/copy');
-const copyExtra = require('./tasks/copy-extra');
-const compileCSS = require('./tasks/css-compiler');
-const compileJS = require('./tasks/js-compiler');
-// const imagemin = require('./tasks/imagemin');
-// const imageResize = require('./tasks/image-resize');
-// const compression = require('./tasks/compression');
+const copy = require('@webscaffold/task-copy');
+const cssCompiler = require('@webscaffold/task-css-compiler').compiler;
+const jsCompiler = require('@webscaffold/task-js-compiler');
 const { config } = require('./config');
+const webpackConfig = require('./config/webpack.config.js');
+
+const appDirectory = fs.realpathSync(process.cwd());
+const resolvePath = (relativePath) => path.resolve(appDirectory, relativePath);
+
+const cssCompilerTask = (options) => cssCompiler(config.paths.stylesEntryPoint, config.paths.stylesOutputDest, {
+	isDebug: options.isDebug,
+	buildPath: resolvePath(config.paths.buildPath),
+	sass: {
+		sourceMapEmbed:	options.isDebug
+	}
+});
 
 /**
  * Run the build task, building a production ready app
- * @param {Object} options - Task options object
+ *
+ * @param {object} options - Task options object
  * @returns {Promise} - Promise object
  */
-async function startBuild(options) {
+module.exports = async function(options) {
+	if (options.logLevel) {
+		process.env.WEBSCAFFOLD_LOG_LEVEL = 'debug';
+	}
+
 	reporter('build').emit('log', 'starting build');
 
-	await clean([`${config.paths.buildPath}/*`], { reporter });
+	await clean([`${resolvePath(config.paths.buildPath)}/*`], { reporter });
 
-	// To preserve folder structure, CPY needs `cwd` to be passed.
-	const cpy = { cwd: path.join(process.cwd(), config.paths.srcPath), parents: true };
-	const absoluteBuildPath = path.join(process.cwd(), config.paths.buildPath);
-
+	const cpy = { cwd: resolvePath(config.paths.srcPath), parents: true };
 	await Promise.all([
-		copyStatic({ taskName: 'copy:static', src: 'static/**/*', dest: absoluteBuildPath, cpy }),
-		copyStatic({ taskName: 'copy:server', src: 'server/**/*', dest: absoluteBuildPath, cpy }),
-		copyStatic({ taskName: 'copy:server-template', src: 'html/**/*', dest: absoluteBuildPath, cpy }),
-		copyStatic({ taskName: 'copy:ssl', src: 'ssl/**/*', dest: absoluteBuildPath, cpy })
+		copy('static/**/*', resolvePath(config.paths.buildPath), { taskName: 'copy:static', cpy }),
+		copy('server/**/*', resolvePath(config.paths.buildPath), { taskName: 'copy:server', cpy }),
+		copy('html/**/*', resolvePath(config.paths.buildPath), { taskName: 'copy:server-template', cpy }),
+		copy('ssl/**/*', resolvePath(config.paths.buildPath), { taskName: 'copy:ssl', cpy })
 	]);
 
-	await copyExtra();
+	// await copyExtra();
 
 	await Promise.all([
-		compileCSS(config.paths.stylesEntryPoint, config.paths.stylesOutputDest, {
-			isDebug: options.isDebug,
-			buildPath: config.paths.buildPath,
-			sass: {
-				sourceMapEmbed:	options.isDebug
-			}
-		}),
-		compileJS(),
-		// TODO: Add it back
+		cssCompilerTask(options),
+		(async () => {
+			process.env.BROWSERSLIST_ENV = 'modern';
+			await jsCompiler(webpackConfig(config).modernConfig)
+
+			process.env.BROWSERSLIST_ENV = 'legacy';
+			await jsCompiler(webpackConfig(config).legacyConfig)
+		})()
 		// imagemin(opts)
 	]);
-	// TODO: Add it back
 	// await compression(opts);
 	// await imageResize(opts);
-}
-
-module.exports = startBuild;
+};

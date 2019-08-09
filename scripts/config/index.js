@@ -1,3 +1,5 @@
+'use strict';
+
 const loadEnv = require('./../lib/load-env');
 const cli = require('./../cli');
 const webpackConfig = require('./webpack.config');
