@@ -126,8 +126,8 @@ module.exports = function (config) {
 					// https://github.com/babel/babel-loader#options
 					options: {
 						// This is a feature of `babel-loader` for webpack (not Babel itself).
-                		// It enables caching results in ./node_modules/.cache/babel-loader/
-                		// directory for faster rebuilds.
+						// It enables caching results in ./node_modules/.cache/babel-loader/
+						// directory for faster rebuilds.
 						cacheDirectory: true,
 						// We are bundling 2 different versions of our JS for modern and legacy.
 						// The outputed code is driven by babel via browserlist and the namespaces in `.browserslistrc`.
