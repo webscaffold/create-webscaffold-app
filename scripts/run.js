@@ -8,7 +8,7 @@ const StackUtils = require('stack-utils');
 const loadEnv = require('./lib/load-env');
 const cli = require('./cli');
 const runDev = require('./run-dev');
-// const runBuild = require('./run-build');
+const runBuild = require('./run-build');
 // const runLint = require('./run-lint');
 
 loadEnv(process.env.NODE_ENV);
@@ -50,10 +50,7 @@ switch (cli.input[0]) {
 		});
 		break;
 	case 'build':
-		// catchErrors(runBuild)({
-		// 	isDebug: !cli.flags.release,
-		// 	logLevel: cli.flags.verbose
-		// });
+		catchErrors(runBuild)({ isDebug: !cli.flags.release, logLevel: cli.flags.verbose });
 		break;
 	case 'lint':
 		// catchErrors(runLint)();
@@ -62,9 +59,6 @@ switch (cli.input[0]) {
 		console.log('{version.number}');
 		break;
 	default:
-		// catchErrors(runBuild)({
-		// 	isDebug: !cli.flags.release,
-		// 	logLevel: cli.flags.verbose
-		// });
+		catchErrors(runBuild)({ isDebug: !cli.flags.release, logLevel: cli.flags.verbose });
 		break;
 }

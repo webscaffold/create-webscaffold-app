@@ -9,6 +9,7 @@ const cssCompiler = require('@webscaffold/task-css-compiler').compiler;
 const jsCompiler = require('@webscaffold/task-js-compiler');
 const { config } = require('./config');
 const webpackConfig = require('./config/webpack.config.js');
+const pkg = require('../package.json');
 
 const appDirectory = fs.realpathSync(process.cwd());
 const resolvePath = (relativePath) => path.resolve(appDirectory, relativePath);
@@ -41,10 +42,17 @@ module.exports = async function(options) {
 		copy('static/**/*', resolvePath(config.paths.buildPath), { taskName: 'copy:static', cpy }),
 		copy('server/**/*', resolvePath(config.paths.buildPath), { taskName: 'copy:server', cpy }),
 		copy('html/**/*', resolvePath(config.paths.buildPath), { taskName: 'copy:server-template', cpy }),
-		copy('ssl/**/*', resolvePath(config.paths.buildPath), { taskName: 'copy:ssl', cpy })
+		copy('ssl/**/*', resolvePath(config.paths.buildPath), { taskName: 'copy:ssl', cpy }),
+		fs.promises.writeFile(config.paths.buildPath + '/package.json', JSON.stringify({
+			private: true,
+			engines: pkg.engines,
+			dependencies: pkg.dependencies,
+			scripts: {
+				start: 'node ./server/server.js',
+			},
+		}, null, 2)),
+		fs.promises.copyFile('.env', config.paths.buildPath + '/.env')
 	]);
-
-	// await copyExtra();
 
 	await Promise.all([
 		cssCompilerTask(options),
@@ -54,7 +62,7 @@ module.exports = async function(options) {
 
 			process.env.BROWSERSLIST_ENV = 'legacy';
 			await jsCompiler(webpackConfig(config).legacyConfig)
-		})()
+		})(),
 		// imagemin(opts)
 	]);
 	// await compression(opts);
