@@ -2,7 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
-const http2 = require('spdy'); // Using `spdy` until this lands https://github.com/expressjs/express/pull/3730
+// Using `https` until this lands https://github.com/expressjs/express/pull/3730 to use http2
+const https = require('https');
 const logProcessErrors = require('log-process-errors');
 const chalk = require('chalk');
 const loadEnv = require('./util/load-env');
@@ -27,7 +28,7 @@ http.createServer(app).listen(app.get('http-port'), () => {
 });
 
 if (process.env.HTTPS_ENABLED === 'true') {
-	http2.createServer({
+	https.createServer({
 		cert: fs.readFileSync(path.resolve(__dirname, `../ssl/${process.env.SSL_CERT_FILE_NAME}`)),
 		key: fs.readFileSync(path.resolve(__dirname, `../ssl/${process.env.SSL_KEY_FILE_NAME}`))
 	}, app).listen(app.get('https-port'), () => {
