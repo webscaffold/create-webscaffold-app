@@ -1,6 +1,6 @@
 # -------- Build environment
 # Base image
-FROM node:10-alpine as builder
+FROM node:12-alpine as builder
 
 # Set working directory
 RUN mkdir /app
@@ -28,7 +28,7 @@ ENV NODE_ENV production
 RUN npm run build:release
 
 # -------- Production environment
-FROM node:10-alpine
+FROM node:12-alpine
 ENV NODE_ENV production
 RUN mkdir /app
 WORKDIR /app
