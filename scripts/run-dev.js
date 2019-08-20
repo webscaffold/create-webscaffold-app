@@ -18,14 +18,14 @@ const eventBus = new Emittery();
 const appDirectory = fs.realpathSync(process.cwd());
 const resolvePath = (relativePath) => path.resolve(appDirectory, relativePath);
 
-const copyStaticTask = () => copy('static/**/*', resolvePath(config.paths.buildPath), {
+const copyStatic = () => copy('static/**/*', resolvePath(config.paths.buildPath), {
 	taskName: 'copy:static',
 	cpy: {
 		cwd: resolvePath(config.paths.srcPath),
 		parents: true
 	}
 });
-const cssCompilerTask = (options) => cssCompiler(config.paths.stylesEntryPoint, config.paths.stylesOutputDest, {
+const sassCompiler = (options) => cssCompiler(config.paths.stylesEntryPoint, config.paths.stylesOutputDest, {
 	isDebug: options.isDebug,
 	eventBus,
 	buildPath: resolvePath(config.paths.buildPath),
@@ -33,7 +33,7 @@ const cssCompilerTask = (options) => cssCompiler(config.paths.stylesEntryPoint, 
 		sourceMapEmbed:	options.isDebug
 	}
 });
-const runServerTask = (options) => runServer('src/server/server.js', { inspect: options.nodeInspect });
+const runDevServer = (options) => runServer('src/server/server.js', { inspect: options.nodeInspect });
 
 /**
  * Run the dev task, compile css and js and run the local server
@@ -48,19 +48,19 @@ module.exports = async function(options) {
 
 	reporter('dev').emit('log', 'starting dev');
 
-	await clean([`${resolvePath(config.paths.buildPath)}/*`], { reporter });
-	await copyStaticTask();
+	await clean([`${resolvePath(config.paths.buildPath)}/*`]);
+	await copyStatic();
 	await Promise.all([
-		cssCompilerTask(options),
+		sassCompiler(options),
 		(async () => {
 			process.env.BROWSERSLIST_ENV = 'modern';
-			await jsCompiler(webpackConfig(config).modernConfig, { eventBus })
+			await jsCompiler(webpackConfig(config).modernConfig)
 
 			process.env.BROWSERSLIST_ENV = 'legacy';
-			await jsCompiler(webpackConfig(config).legacyConfig, { eventBus })
+			await jsCompiler(webpackConfig(config).legacyConfig)
 		})()
 	]);
-	await runServerTask(options);
+	await runDevServer(options);
 	await browserSync.init({
 		eventBus,
 		https: process.env.HTTPS_ENABLED,
@@ -68,8 +68,8 @@ module.exports = async function(options) {
 		cert: `src/ssl/${process.env.SSL_CERT_FILE_NAME}`
 	});
 
-	await new watcher(['src/static/**/*.*'], { label: 'static assets' }, () => copyStaticTask());
-	await new watcher([`src/styles/**/*.scss`], { label: 'sass files' }, () => cssCompilerTask(options));
-	await new watcher(['src/html/**/*.*'], { label: 'html files' }, () => runServerTask(options));
-	await new watcher(['src/server/**/*.js'], { label: 'server files' }, () => runServerTask(options));
+	await new watcher(['src/static/**/*.*'], { label: 'static assets' }, () => copyStatic());
+	await new watcher([`src/styles/**/*.scss`], { label: 'sass files' }, () => sassCompiler(options));
+	await new watcher(['src/html/**/*.*'], { label: 'html files' }, () => runDevServer(options));
+	await new watcher(['src/server/**/*.js'], { label: 'server files' }, () => runDevServer(options));
 };

@@ -14,7 +14,7 @@ const pkg = require('../package.json');
 const appDirectory = fs.realpathSync(process.cwd());
 const resolvePath = (relativePath) => path.resolve(appDirectory, relativePath);
 
-const cssCompilerTask = (options) => cssCompiler(config.paths.stylesEntryPoint, config.paths.stylesOutputDest, {
+const sassCompiler = (options) => cssCompiler(config.paths.stylesEntryPoint, config.paths.stylesOutputDest, {
 	isDebug: options.isDebug,
 	buildPath: resolvePath(config.paths.buildPath),
 	sass: {
@@ -53,9 +53,8 @@ module.exports = async function(options) {
 		}, null, 2)),
 		fs.promises.copyFile('.env', config.paths.buildPath + '/.env')
 	]);
-
 	await Promise.all([
-		cssCompilerTask(options),
+		sassCompiler(options),
 		(async () => {
 			process.env.BROWSERSLIST_ENV = 'modern';
 			await jsCompiler(webpackConfig(config).modernConfig)
