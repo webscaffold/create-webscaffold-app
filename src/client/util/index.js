@@ -1,8 +1,9 @@
 /**
  * Unique items based on url property.
+ *
  * @param {!Array} items
  * @param {string} propName Property name to filter on.
- * @return {!Array} unique array of items
+ * @returns {!Array} unique array of items
  */
 function uniqueByProperty(items, propName) {
 	const posts = Array.from(
@@ -48,9 +49,9 @@ function sortPostsByDate(items) {
 		.reverse();
 }
 
-function groupBySubmittedDate (items) {
+function groupBySubmittedDate(items) {
 	const map = new Map();
-	items.forEach(item => {
+	items.forEach((item) => {
 		const submitted = formatDate(item.submitted);
 		if (!map.has(submitted)) {
 			map.set(submitted, []);
