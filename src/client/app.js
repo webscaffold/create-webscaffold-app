@@ -1,3 +1,4 @@
+// eslint-disable-next-line unicorn/filename-case
 import { render } from 'lit-html';
 import PostList from './components/post-list';
 
