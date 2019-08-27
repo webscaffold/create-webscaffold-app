@@ -256,29 +256,6 @@ module.exports = function (config) {
 			// 	prettyPrint: true
 			// }),
 
-			// https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin
-			// The GenerateSW plugin will create a service worker file for you and add it to the webpack asset pipeline.
-			new GenerateSW({
-				clientsClaim: true,
-				exclude: [/\.map$/, /asset-manifest\.json$/],
-				importWorkboxFrom: 'cdn',
-				navigateFallback: '/index.html',
-				navigateFallbackBlacklist: [
-					// Exclude URLs starting with /_, as they're likely an API call
-					new RegExp('^/_'),
-					// Exclude URLs containing a dot, as they're likely a resource in
-					// public/ and not a SPA route
-					new RegExp('/[^/]+\\.[^/]+$'),
-				],
-				globDirectory: path.resolve(cwd, config.paths.staticAssetsOutput),
-				globPatterns: ['**/*.{html,js,css}'],
-				swDest: path.join(path.resolve(cwd, config.paths.staticAssetsOutput), 'sw.js')
-			}),
-
-			// Prints the gzipped sizes of your webpack assets and the changes since the last build.
-			// https://github.com/GoogleChromeLabs/size-plugin
-			new SizePlugin(),
-
 			...(config.isDebug
 				? [
 					// Enables Hot Module Replacement, otherwise known as HMR
@@ -366,7 +343,22 @@ module.exports = function (config) {
 				manifestFirst: true,
 				path: path.resolve(cwd, config.paths.buildPath),
 				prettyPrint: true
-			})
+			}),
+
+			// https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin
+			// The GenerateSW plugin will create a service worker file for you and add it to the webpack asset pipeline.
+			new GenerateSW({
+				clientsClaim: true,
+				skipWaiting: true,
+				exclude: [/\.map$/, /asset-manifest\.json$/],
+				globDirectory: path.resolve(cwd, config.paths.staticAssetsOutput),
+				globPatterns: ['**/*.{html,js,css}'],
+				swDest: path.join(path.resolve(cwd, config.paths.staticAssetsOutput), 'sw.js')
+			}),
+
+			// Prints the gzipped sizes of your webpack assets and the changes since the last build.
+			// https://github.com/GoogleChromeLabs/size-plugin
+			new SizePlugin()
 		]
 	});
 
