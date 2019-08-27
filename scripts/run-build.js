@@ -37,6 +37,11 @@ module.exports = async function(options) {
 
 	await clean([`${resolvePath(config.paths.buildPath)}/*`], { reporter });
 
+	if (!fs.existsSync(resolvePath(config.paths.buildPath))) {
+		reporter('build').emit('start', 'create build folder');
+		await fs.promises.mkdir(resolvePath(config.paths.buildPath));
+	}
+
 	const cpy = { cwd: resolvePath(config.paths.srcPath), parents: true };
 	await Promise.all([
 		copy('static/**/*', resolvePath(config.paths.buildPath), { taskName: 'copy:static', cpy }),
