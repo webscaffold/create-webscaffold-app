@@ -76,7 +76,7 @@
     "@webscaffold/task-browser-sync": "0.1.0-alpha.2",
     "@webscaffold/task-clean": "0.1.0-alpha.8",
     "@webscaffold/task-copy": "0.1.0-alpha.6",
-    "@webscaffold/task-core": "0.1.0-alpha.8",
+    "@webscaffold/task-core": "0.1.0-alpha.9",
     "@webscaffold/task-css-compiler": "0.1.0-alpha.5",
     "@webscaffold/task-js-compiler": "0.1.0-alpha.2",
     "@webscaffold/task-watcher": "0.1.0-alpha.2",
