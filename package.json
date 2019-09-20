@@ -108,7 +108,7 @@
     "stylelint-formatter-pretty": "1.1.2",
     "terser-webpack-plugin": "1.4.1",
     "webpack": "4.40.1",
-    "webpack-bundle-analyzer": "3.4.1",
+    "webpack-bundle-analyzer": "3.5.1",
     "webpack-dev-middleware": "3.7.1",
     "webpack-hot-middleware": "2.25.0",
     "webpack-monitor": "1.0.14",
