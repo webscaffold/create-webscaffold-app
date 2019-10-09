@@ -92,7 +92,7 @@
     "emittery": "0.5.0",
     "eslint": "6.4.0",
     "eslint-formatter-pretty": "2.1.1",
-    "execa": "2.0.4",
+    "execa": "2.1.0",
     "figures": "3.0.0",
     "html-webpack-plugin": "4.0.0-beta.8",
     "meow": "5.0.0",
