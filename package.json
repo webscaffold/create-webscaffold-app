@@ -38,7 +38,7 @@
     "test:scripts": "ava"
   },
   "dependencies": {
-    "@babel/runtime": "7.6.2",
+    "@babel/runtime": "7.6.3",
     "body-parser": "1.19.0",
     "chalk": "2.4.2",
     "compression": "1.7.4",
@@ -65,12 +65,12 @@
     "winston": "3.2.1"
   },
   "devDependencies": {
-    "@babel/core": "7.6.2",
+    "@babel/core": "7.6.4",
     "@babel/plugin-proposal-class-properties": "7.5.5",
     "@babel/plugin-proposal-optional-chaining": "7.6.0",
     "@babel/plugin-syntax-dynamic-import": "7.2.0",
     "@babel/plugin-transform-runtime": "7.6.2",
-    "@babel/preset-env": "7.6.2",
+    "@babel/preset-env": "7.6.3",
     "@radum/eslint-config": "1.1.0",
     "@radum/stylelint-config": "0.3.0",
     "@webscaffold/task-browser-sync": "0.1.0-alpha.3",
