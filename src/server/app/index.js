@@ -202,6 +202,7 @@ if (!config.isProd) {
 // Register express static for all files within the static folder.
 // Set the max-age property of the Cache-Control header for all static assets to 1 year.
 // Using a long term cache is a good strategy considering that all assetes will be versioned.
+// TODO: Consider using https://github.com/lukeed/sirv
 app.use('/', express.static(config.server.paths.staticAssets, {
 	maxAge: '1y'
 }));

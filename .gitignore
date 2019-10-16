@@ -15,6 +15,7 @@ build-tmp
 .sass-cache
 .tmp
 .webpack-monitor
+size-plugin.json
 
 # Code coverage
 coverage

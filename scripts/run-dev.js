@@ -60,7 +60,7 @@ module.exports = async function(options) {
 			await jsCompiler(webpackConfig(config).legacyConfig)
 		})()
 	]);
-	await runDevServer(options);
+	// await runDevServer(options);
 	await browserSync.init({
 		eventBus,
 		https: process.env.HTTPS_ENABLED,
@@ -70,6 +70,6 @@ module.exports = async function(options) {
 
 	await new watcher(['src/static/**/*.*'], { label: 'static assets' }, () => copyStatic());
 	await new watcher([`src/styles/**/*.scss`], { label: 'sass files' }, () => sassCompiler(options));
-	await new watcher(['src/html/**/*.*'], { label: 'html files' }, () => runDevServer(options));
-	await new watcher(['src/server/**/*.js'], { label: 'server files' }, () => runDevServer(options));
+	// await new watcher(['src/html/**/*.*'], { label: 'html files' }, () => runDevServer(options));
+	// await new watcher(['src/server/**/*.js'], { label: 'server files' }, () => runDevServer(options));
 };

@@ -18,7 +18,7 @@
 // https://github.com/github/fetch
 // import 'whatwg-fetch';
 import Raven from 'raven-js';
-import App from './App';
+import App from './app';
 
 // Make sure you set the `SENTRY_DSN_URL` env var via .env files
 // if you need this to work in the code, as the entire IF will be skiped on compile
