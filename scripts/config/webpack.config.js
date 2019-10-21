@@ -272,7 +272,7 @@ module.exports = function (config) {
 					new CompressionPlugin({
 						algorithm: 'gzip',
 						filename: '[path].gz[query]',
-						test: /\.(js|mjs|css|html|svg)$/,
+						test: /\.(js|mjs)$/,
 						compressionOptions: { level: 9 },
 						threshold: 10240,
 						minRatio: 0.8,
@@ -281,7 +281,7 @@ module.exports = function (config) {
 					new CompressionPlugin({
 						filename: '[path].br[query]',
 						algorithm: 'brotliCompress',
-						test: /\.(js|mjs|css|html|svg)$/,
+						test: /\.(js|mjs)$/,
 						compressionOptions: { level: 11 },
 						threshold: 10240,
 						minRatio: 0.8,

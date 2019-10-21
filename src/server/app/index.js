@@ -1,8 +1,9 @@
 'use strict';
-// const fs = require('fs');
+
 const timestamp = require('time-stamp');
 const chalk = require('chalk');
 const express = require('express');
+const sirv = require('sirv');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -14,16 +15,10 @@ const PrettyError = require('pretty-error');
 const errorhandler = require('errorhandler');
 const expressRoutesLogger = require('morgan');
 const serverTiming = require('server-timing');
-// TODO: Rate limit options
-// https://www.npmjs.com/package/express-brute,
-// https://github.com/animir/node-rate-limiter-flexible
-// https://github.com/energizer91/smart-request-balancer
-const rateLimit = require('express-rate-limit');
-const mime = require('mime');
 
 const logger = require('../util/logger').default;
 const config = require('../config');
-const findEncoding = require('../util/encoding-selection').findEncoding;
+const brotliCompression = require('../middleware/brotli-compression');
 const noopServiceWorkerMiddleware = require('../middleware/noop-service-worker-middleware');
 
 // Express App with view engine via Marko
@@ -55,19 +50,6 @@ app.set('trust proxy', true);
 // Express http/s ports
 app.set('http-port', config.server.port || 3000);
 app.set('https-port', config.server.https_port || 3443);
-
-if (config.isProd) {
-	// Express Rate Limit
-	const limiter = new rateLimit({
-		windowMs: 15*60*1000, // 15 minutes
-		max: 250, // limit each IP to 100 requests per windowMs
-		delayMs: 0, // disable delaying - full speed until the max limit is reached,
-		onLimitReached: () => {
-			logger.log('warn', 'Express Rate Limit reached');
-		}
-	});
-	app.use(limiter);
-}
 
 // Records the response time for requests in HTTP servers by adding `X-Response-Time` header to responses.
 // Defined as the elapsed time from when a request enters this middleware to when the headers are written out.
@@ -114,8 +96,13 @@ app.use(helmet());
 // Add [Server-Timing](https://www.w3.org/TR/server-timing/) to response headers.
 app.use(serverTiming());
 
-// Routes
+// Middlewares
 // -----------------------------------------------------------------------------
+// app.use(webpMiddleware(config.server.paths.staticAssets));
+
+if (process.env.USE_BROTLI === 'true') {
+	app.use('/scripts/', brotliCompression({ logger: console }));
+}
 
 // Redirect to HTTPS automatically if options is set
 if (process.env.HTTPS_REDIRECT === 'true') {
@@ -155,41 +142,6 @@ if (config.isProd) {
 	});
 }
 
-// Respond with Brotli files is the browser accepts it (js, css only)
-if (process.env.USE_BROTLI === 'true' && config.isProd) {
-	logger.log('info', 'Using brotli redirects for JS and CSS files');
-
-	app.get(/\.js$|css$/, (req, res, next) => {
-		logger.log('debug', `Brotli redirect for: ${req.url}`);
-
-		// Get browser's' supported encodings
-		const acceptEncoding = req.header('accept-encoding');
-
-		const compressionType = findEncoding(acceptEncoding, [{ encodingName: 'br' }]);
-
-		// Check for null first, becuase apps like Sentry for example don't add `accept-encoding` to the request
-		if (compressionType !== null && compressionType.encodingName === 'br') {
-			// As long as there is any compression available for this file, add the Vary Header (used for caching proxies)
-			res.setHeader('Vary', 'Accept-Encoding');
-
-			const type = mime.getType(req.path);
-			let search = req.url.split('?').splice(1).join('?');
-
-			if (search !== '') {
-				search = '?' + search;
-			}
-
-			req.url = req.url + '.br';
-			res.setHeader('Content-Encoding', 'br');
-			res.setHeader('Content-Type', `${type}; charset=UTF-8`);
-		} else {
-			logger.log('debug', `Brotli redirect failed: compressionType: ${JSON.stringify(compressionType)}`);
-		}
-
-		next();
-	});
-}
-
 // This service worker file is effectively a 'no-op' that will reset any
 // previous service worker registered for the same host:port combination.
 // We do this in development to avoid hitting the production cache if
@@ -199,13 +151,20 @@ if (!config.isProd) {
 	app.use(noopServiceWorkerMiddleware());
 }
 
+// Routes
+// -----------------------------------------------------------------------------
+
 // Register express static for all files within the static folder.
 // Set the max-age property of the Cache-Control header for all static assets to 1 year.
 // Using a long term cache is a good strategy considering that all assetes will be versioned.
-// TODO: Consider using https://github.com/lukeed/sirv
 app.use('/', express.static(config.server.paths.staticAssets, {
 	maxAge: '1y'
 }));
+// Using express.static until sirv accepts middleware header changes.
+// app.use(sirv(config.server.paths.staticAssets, {
+// 	etag: true,
+// 	maxAge: 31536000 // 1Y
+// }));
 
 // Error handling
 // -----------------------------------------------------------------------------
