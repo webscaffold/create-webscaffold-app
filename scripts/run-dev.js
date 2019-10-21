@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const Emittery = require('emittery');
+const nodemon = require('nodemon');
 const { reporter } = require('@webscaffold/task-core');
 const clean = require('@webscaffold/task-clean');
 const copy = require('@webscaffold/task-copy');
@@ -10,7 +11,6 @@ const cssCompiler = require('@webscaffold/task-css-compiler').compiler;
 const jsCompiler = require('@webscaffold/task-js-compiler');
 const browserSync = require('@webscaffold/task-browser-sync');
 const watcher = require('@webscaffold/task-watcher');
-const runServer = require('./tasks/task-server');
 const { config } = require('./config');
 const webpackConfig = require('./config/webpack.config.js');
 
@@ -33,7 +33,7 @@ const sassCompiler = (options) => cssCompiler(config.paths.stylesEntryPoint, con
 		sourceMapEmbed:	options.isDebug
 	}
 });
-const runDevServer = (options) => runServer('src/server/server.js', { inspect: options.nodeInspect });
+// const runDevServer = (options) => runServer('src/server/server.js', { inspect: options.nodeInspect });
 
 /**
  * Run the dev task, compile css and js and run the local server
@@ -60,7 +60,27 @@ module.exports = async function(options) {
 			await jsCompiler(webpackConfig(config).legacyConfig)
 		})()
 	]);
-	// await runDevServer(options);
+
+	nodemon({
+		script: 'src/server/server.js',
+		verbose: options.logLevel,
+		watch: [
+			'./src/html',
+			'./src/server'
+		],
+		ext: 'js json marko'
+	});
+
+	nodemon.on('start', function () {
+		reporter('dev').emit('start', 'starting node server (via expressjs)');
+	}).on('quit', function () {
+		reporter('dev').emit('done', 'local node server terminated');
+		// eslint-disable-next-line no-process-exit, unicorn/no-process-exit
+		process.exit();
+	}).on('restart', function (files) {
+		reporter('dev').emit('info', `restarting node server due to changes to: ${files}`);
+	});
+
 	await browserSync.init({
 		eventBus,
 		https: process.env.HTTPS_ENABLED,
@@ -70,6 +90,4 @@ module.exports = async function(options) {
 
 	await new watcher(['src/static/**/*.*'], { label: 'static assets' }, () => copyStatic());
 	await new watcher([`src/styles/**/*.scss`], { label: 'sass files' }, () => sassCompiler(options));
-	// await new watcher(['src/html/**/*.*'], { label: 'html files' }, () => runDevServer(options));
-	// await new watcher(['src/server/**/*.js'], { label: 'server files' }, () => runDevServer(options));
 };

@@ -96,6 +96,7 @@
     "figures": "3.0.0",
     "html-webpack-plugin": "4.0.0-beta.8",
     "meow": "5.0.0",
+    "nodemon": "^1.19.4",
     "os": "0.1.1",
     "pnp-webpack-plugin": "1.5.0",
     "prettier": "1.18.2",
