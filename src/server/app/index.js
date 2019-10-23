@@ -3,7 +3,7 @@
 const timestamp = require('time-stamp');
 const chalk = require('chalk');
 const express = require('express');
-const sirv = require('sirv');
+// const sirv = require('sirv');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
