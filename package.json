@@ -74,7 +74,7 @@
     "@babel/preset-env": "7.6.3",
     "@radum/eslint-config": "1.2.0",
     "@radum/stylelint-config": "1.0.0",
-    "@webscaffold/task-browser-sync": "0.1.0-alpha.3",
+    "@webscaffold/task-browser-sync": "0.1.0-alpha.4",
     "@webscaffold/task-clean": "0.1.0-alpha.9",
     "@webscaffold/task-copy": "0.1.0-alpha.7",
     "@webscaffold/task-core": "0.1.0-alpha.9",
