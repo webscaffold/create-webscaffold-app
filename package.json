@@ -75,7 +75,7 @@
     "@radum/eslint-config": "1.2.0",
     "@radum/stylelint-config": "1.0.0",
     "@webscaffold/task-browser-sync": "0.1.0-alpha.3",
-    "@webscaffold/task-clean": "0.1.0-alpha.9",
+    "@webscaffold/task-clean": "0.1.0-alpha.10",
     "@webscaffold/task-copy": "0.1.0-alpha.7",
     "@webscaffold/task-core": "0.1.0-alpha.9",
     "@webscaffold/task-css-compiler": "0.1.0-alpha.6",
