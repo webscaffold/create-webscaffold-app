@@ -80,7 +80,7 @@
     "@webscaffold/task-core": "0.1.0-alpha.9",
     "@webscaffold/task-css-compiler": "0.1.0-alpha.6",
     "@webscaffold/task-js-compiler": "0.1.0-alpha.3",
-    "@webscaffold/task-watcher": "0.1.0-alpha.3",
+    "@webscaffold/task-watcher": "0.1.0-alpha.4",
     "assets-webpack-plugin": "3.9.10",
     "ava": "2.4.0",
     "babel-loader": "8.0.6",
