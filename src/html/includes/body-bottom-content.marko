@@ -1,9 +1,5 @@
 import ServiceWorker from './service-worker.marko';
 
-<if(data.app.assets.runtimeContent)>
-<script type="module">${data.app.assets.runtimeContent}</script>
-</if>
-
 <if(data.app.assetsLegacy.runtimeContentLegacy)>
 <script nomodule>${data.app.assetsLegacy.runtimeContentLegacy}</script>
 </if>
@@ -11,12 +7,9 @@ import ServiceWorker from './service-worker.marko';
 <!-- Load modern and legacy bundles like this
 <script type="module" src="main.mjs"></script>
 <script nomodule src="lagacy.js"></script>
+
+Modern scripts are in head.
 -->
-
-<for|file| of=data.app.assets.scripts>
-<script type="module" src=`${file}`></script>
-</for>
-
 <for|file| of=data.app.assetsLegacy.scripts>
 <script nomodule src=`${file}`></script>
 </for>

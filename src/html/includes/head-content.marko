@@ -46,3 +46,19 @@
 <for|file| of=data.app.assets.styles>
 <link rel="stylesheet" href=`${file}`>
 </for>
+
+<!-- Load modern JS in head to speed up the download of the files
+https://v8.dev/features/modules#defer - Modules are deferred by default
+This means that <script type="module"> Will download as html parser runs
+and it will execut at the end of it.
+
+<script type="module" async> will run once its download is complete.
+-->
+
+<if(data.app.assets.runtimeContent)>
+<script type="module">${data.app.assets.runtimeContent}</script>
+</if>
+
+<for|file| of=data.app.assets.scripts>
+<script type="module" src=`${file}`></script>
+</for>
