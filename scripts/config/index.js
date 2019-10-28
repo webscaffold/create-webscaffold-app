@@ -29,6 +29,7 @@ const config = {
 		staticAssetsOutput: 'build/static',
 
 		styles: 'src/styles/**/*.scss',
+		stylesFolder: 'src/styles',
 		stylesEntryPoint: 'src/styles/main.scss',
 		stylesOutputDest: 'build/static/styles',
 

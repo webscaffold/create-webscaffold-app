@@ -30,7 +30,6 @@ if (__SENTRY_DSN_URL__ && !__DEV__) {
 		})
 		.install();
 
-	// TODO: Not sure I actually need this from Sentry
 	Raven.context(() => {
 		const app = new App();
 

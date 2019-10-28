@@ -1,21 +1,17 @@
 'use strict';
+
 const config = require('../config');
-const pageDataAssets = require('../data/page-data-assets');
-const pageData = require('../data/page-data');
+const globalDataInjector = require('../data/global-injector');
 
 // App template
 const template = require(`${config.server.paths.htmlTemplates}/pages/home.marko`);
 
 // Template data
-const data = {
-	app: {
-		...pageData,
-		...pageDataAssets('main')
-	},
+const data = globalDataInjector('main', {
 	page: {
-
+		title: 'ES6 Web app boilerplate using Gulp + Webpack'
 	}
-};
+});
 
 function homePageRouter (req, res) {
 	res.marko(template, data);

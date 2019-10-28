@@ -1,7 +1,7 @@
 'use strict';
 
-const config = {
+const logger = {
 
 };
 
-module.exports = config;
+module.exports = logger;

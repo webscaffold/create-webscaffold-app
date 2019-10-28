@@ -3,7 +3,7 @@ import BodyBottomContent from './includes/body-bottom-content.marko';
 import BrowserSync from './includes/browser-sync.marko';
 
 <!doctype html>
-<html class="no-js" lang="">
+<html class="no-js" lang="en-en">
 	<head>
 		<${HeadContent} ...data/>
 	</head>
@@ -14,8 +14,8 @@ import BrowserSync from './includes/browser-sync.marko';
 		<!-- Body bottom content (js runtime, js scripts, service worker, analytics, etc.) -->
 		<${BodyBottomContent} ...data/>
 
-		<if(data.isProd === false)>
-		<${BrowserSync} ...data.browserSync/>
+		<if(data.app.isProd === false)>
+		<${BrowserSync}/>
 		</if>
 		<!-- Built with love using RaduM's ES6 Web app boilerplate -->
 	</body>

@@ -18,7 +18,8 @@ const sassCompiler = (options) => cssCompiler(config.paths.stylesEntryPoint, con
 	isDebug: options.isDebug,
 	buildPath: resolvePath(config.paths.buildPath),
 	sass: {
-		sourceMapEmbed:	options.isDebug
+		sourceMapEmbed:	options.isDebug,
+		includePaths: [resolvePath(`${config.paths.stylesFolder}/env/${process.env.NODE_ENV}`)]
 	}
 });
 

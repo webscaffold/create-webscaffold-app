@@ -4,6 +4,7 @@
     "@radum/eslint-config/node"
   ],
   "rules": {
-    "no-console": 0
+    "no-console": 0,
+    "filenames/match-exported": 0
   }
 }

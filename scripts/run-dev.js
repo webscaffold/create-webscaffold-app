@@ -25,15 +25,18 @@ const copyStatic = () => copy('static/**/*', resolvePath(config.paths.buildPath)
 		parents: true
 	}
 });
-const sassCompiler = (options) => cssCompiler(config.paths.stylesEntryPoint, config.paths.stylesOutputDest, {
-	isDebug: options.isDebug,
-	eventBus,
-	buildPath: resolvePath(config.paths.buildPath),
-	sass: {
-		sourceMapEmbed:	options.isDebug
-	}
-});
-// const runDevServer = (options) => runServer('src/server/server.js', { inspect: options.nodeInspect });
+
+const sassCompiler = (options) => {
+	return cssCompiler(config.paths.stylesEntryPoint, config.paths.stylesOutputDest, {
+		isDebug: options.isDebug,
+		eventBus,
+		buildPath: resolvePath(config.paths.buildPath),
+		sass: {
+			sourceMapEmbed:	options.isDebug,
+			includePaths: [resolvePath(`${config.paths.stylesFolder}/env/${process.env.NODE_ENV}`)]
+		}
+	});
+};
 
 /**
  * Run the dev task, compile css and js and run the local server

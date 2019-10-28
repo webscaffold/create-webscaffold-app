@@ -36,7 +36,6 @@
 		}
 	} @else if $min != null and $max != null {
 		// MD LG
-		// TODO: Convert these to EMs as per MQ does.
 		@media (min-width: $min) and (max-width: $max) {
 			@content;
 		}

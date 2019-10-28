@@ -27,6 +27,7 @@ RUN npm ci
 COPY . /app
 ENV NODE_ENV production
 RUN npm run build:release
+# --------------------------
 
 # -------- Production environment
 FROM node:12-alpine
@@ -39,7 +40,8 @@ RUN ls
 RUN echo $NODE_ENV
 EXPOSE 3000
 CMD ["node", "./server/server.js"]
+# --------------------------
 
 # To run:
 # docker build -f Dockerfile -t webapp-sample-app .
-# docker run -it -p 3000:3000 --rm webapp-sample-app
+# docker run -it -p 3000:3000 --env SESSION_SECRET=__your-secret-goes-here__ --rm webapp-sample-app

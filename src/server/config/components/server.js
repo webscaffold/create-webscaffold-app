@@ -5,7 +5,7 @@ const common = require('./common');
 
 const morganDevLog = ':timestamp :method :url :status :response-time ms - :res[content-length]';
 
-const config = {
+const server = {
 	server: {
 		port: process.env.PORT,
 		https_port: process.env.HTTPS_PORT,
@@ -23,4 +23,4 @@ const config = {
 	}
 };
 
-module.exports = config;
+module.exports = server;

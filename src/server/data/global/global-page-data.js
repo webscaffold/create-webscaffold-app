@@ -1,6 +1,6 @@
 'use strict';
 const joi = require('joi');
-const config = require('../config');
+const config = require('../../config');
 
 const dataSchema = joi.object({
 	isProd: joi.boolean().required(),

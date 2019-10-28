@@ -16,7 +16,7 @@ const errorhandler = require('errorhandler');
 const expressRoutesLogger = require('morgan');
 const serverTiming = require('server-timing');
 
-const logger = require('../util/logger').default;
+const logger = require('../util/logger');
 const config = require('../config');
 const brotliCompression = require('../middleware/brotli-compression');
 const noopServiceWorkerMiddleware = require('../middleware/noop-service-worker-middleware');
@@ -131,7 +131,7 @@ if (config.isProd) {
 
 			res
 				.status(401)
-				.send('Authentication access token is required to access the source map.');
+				.send('Authentication access token is required to access the source map');
 
 			return;
 		}
@@ -148,6 +148,7 @@ if (config.isProd) {
 // it used the same host and port.
 // https://github.com/facebook/create-react-app/issues/2272#issuecomment-302832432
 if (!config.isProd) {
+	logger.log('debug', 'Using noop service worker middleware');
 	app.use(noopServiceWorkerMiddleware());
 }
 

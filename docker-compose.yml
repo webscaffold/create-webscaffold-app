@@ -1,4 +1,7 @@
 version: '3'
+# '2' - focus: single-node dev/test
+# '3' - focus: multi-node orchestration
+# If not using swarm or kubernetes stick to v2
 
 services:
 
@@ -11,6 +14,7 @@ services:
       - '3000:3000'
     environment:
       - NODE_ENV=production
+      - SESSION_SECRET=__your-secret-goes-here__
 
 # To run:
 # docker-compose -f docker-compose.yml up -d --build

@@ -2,7 +2,7 @@
 const path = require('path');
 const fs = require('fs');
 const joi = require('joi');
-const config = require('../config');
+const config = require('../../config');
 
 // Webpack assets file
 const webpackStaticAssetsObj = require(config.server.paths.assetsWebpackJSONFile);
