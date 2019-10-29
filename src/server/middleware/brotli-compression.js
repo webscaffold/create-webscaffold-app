@@ -1,4 +1,5 @@
 'use strict';
+
 const mime = require('mime');
 const findEncoding = require('../util/encoding-selection').findEncoding;
 
