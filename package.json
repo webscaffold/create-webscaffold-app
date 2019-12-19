@@ -39,7 +39,7 @@
     "commit": "git-cz"
   },
   "dependencies": {
-    "@babel/runtime": "7.7.0",
+    "@babel/runtime": "7.7.7",
     "body-parser": "1.19.0",
     "chalk": "2.4.2",
     "compression": "1.7.4",
@@ -67,12 +67,12 @@
     "winston": "3.2.1"
   },
   "devDependencies": {
-    "@babel/core": "7.7.0",
-    "@babel/plugin-proposal-class-properties": "7.7.0",
-    "@babel/plugin-proposal-optional-chaining": "7.6.0",
-    "@babel/plugin-syntax-dynamic-import": "7.2.0",
-    "@babel/plugin-transform-runtime": "7.6.2",
-    "@babel/preset-env": "7.7.0",
+    "@babel/core": "7.7.7",
+    "@babel/plugin-proposal-class-properties": "7.7.4",
+    "@babel/plugin-proposal-optional-chaining": "7.7.5",
+    "@babel/plugin-syntax-dynamic-import": "7.7.4",
+    "@babel/plugin-transform-runtime": "7.7.6",
+    "@babel/preset-env": "7.7.7",
     "@commitlint/config-conventional": "8.2.0",
     "@commitlint/prompt": "8.2.0",
     "@radum/eslint-config": "1.2.0",
