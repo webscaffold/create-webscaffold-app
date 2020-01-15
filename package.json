@@ -76,7 +76,7 @@
     "@commitlint/config-conventional": "8.2.0",
     "@commitlint/prompt": "8.2.0",
     "@radum/eslint-config": "1.3.1",
-    "@radum/stylelint-config": "1.1.1",
+    "@radum/stylelint-config": "2.0.0",
     "@webscaffold/task-browser-sync": "0.1.0-alpha.5",
     "@webscaffold/task-clean": "0.1.0-alpha.11",
     "@webscaffold/task-copy": "0.1.0-alpha.9",
