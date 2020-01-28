@@ -1,9 +1,10 @@
+/* eslint-disable eslint-comments/disable-enable-pair, unicorn/prevent-abbreviations */
 'use strict';
 
 const path = require('path');
 const dotenv = require('dotenv');
 
-module.exports = nodeEnv => {
+module.exports = (nodeEnv) => {
 	const environmentSpecificLocalEnv = dotenv.config({
 		path: path.resolve(`.env.${nodeEnv}.local`),
 	});

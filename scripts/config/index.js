@@ -46,6 +46,12 @@ const config = {
 		images: 'src/static/images/**/*',
 		imagesPath: 'src/static/images',
 		imagesOutputDest: 'build/static/images'
+	},
+
+	experimental: {
+		// TODO: Express app is hardcoded to load a certain number of chunks.
+		// This produces much more and we should make it more modular.
+		granularChunks: false
 	}
 };
 

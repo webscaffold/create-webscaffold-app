@@ -2,6 +2,7 @@
 'use strict';
 
 const path = require('path');
+const crypto = require('crypto');
 const webpack = require('webpack');
 const PnpWebpackPlugin = require('pnp-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -20,6 +21,118 @@ const modules = require('./modules');
 
 module.exports = function (config) {
 	const cwd = process.cwd();
+	const totalPages = 2;
+
+	// More granular default Webpack chunking
+	// https://github.com/zeit/next.js/issues/7631 https://github.com/zeit/next.js/blob/canary/packages/next/build/webpack-config.ts
+	const splitChunksConfigs = {
+		dev: {
+			cacheGroups: {
+				default: false,
+				vendors: false,
+			},
+		},
+		prod: {
+			// This option enables smart code splitting. With it, webpack would extract the vendor code if it gets larger than 30 kB
+			// (before minification and gzip). It would also extract the common code – this is useful if your build produces several bundles
+			// (e.g. if you split your app into routes).
+			chunks: 'all',
+			cacheGroups: {
+				vendors: {
+					name: 'chunk-vendors',
+					test: /[\\/]node_modules[\\/]/,
+					priority: -10,
+					chunks: 'initial'
+				},
+				common: {
+					name: 'chunk-common',
+					// Minimum number of chunks that must share a module before splitting.
+					minChunks: 2,
+					// The priority of the `common` groups are negative so any `vendors` cache group takes higher priority (default 0).
+					priority: -20,
+					chunks: 'initial',
+					reuseExistingChunk: true
+				}
+			}
+		},
+		prodGranular: {
+			chunks: 'all',
+			cacheGroups: {
+				default: false,
+				vendors: false,
+				framework: {
+					chunks: 'all',
+					name: 'framework',
+					// This regex ignores nested copies of framework libraries so they're
+					// bundled with their issuer.
+					// https://github.com/zeit/next.js/pull/9012
+					test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|lit-html|prop-types|raven-js)[\\/]/,
+					priority: 40,
+					// Don't let webpack eliminate this chunk (prevents this chunk from
+					// becoming a part of the commons chunk)
+					enforce: true,
+				},
+				lib: {
+					test(module) {
+						return (module.size() > 160000 &&
+							/node_modules[/\\]/.test(module.identifier()));
+					},
+					name(module) {
+						const hash = crypto.createHash('sha1');
+						if (
+							// mini-css-extract-plugin
+							module.type === `css/mini-extract` ||
+							// extract-css-chunks-webpack-plugin (old)
+							module.type === `css/extract-chunks` ||
+							// extract-css-chunks-webpack-plugin (new)
+							module.type === `css/extract-css-chunks`) {
+							module.updateHash(hash);
+						} else {
+							if (!module.libIdent) {
+								throw new Error(`Encountered unknown module type: ${module.type}. Please open an issue.`);
+							}
+							hash.update(module.libIdent({ context: path.resolve(process.cwd()) }));
+						}
+						return hash.digest('hex').substring(0, 8);
+					},
+					priority: 30,
+					minChunks: 1,
+					reuseExistingChunk: true,
+				},
+				commons: {
+					name: 'commons',
+					minChunks: totalPages,
+					priority: 20,
+				},
+				shared: {
+					name(module, chunks) {
+						return crypto
+							.createHash('sha1')
+							.update(chunks.reduce((acc, chunk) => {
+								return acc + chunk.name;
+							}, ''))
+							.digest('hex');
+					},
+					priority: 10,
+					minChunks: 2,
+					reuseExistingChunk: true,
+				},
+			},
+			maxInitialRequests: 25,
+			minSize: 20000,
+		},
+	};
+
+	// Select appropriate SplitChunksPlugin config for this build
+	let splitChunksConfig;
+	if (config.isDebug) {
+		// splitChunksConfig = splitChunksConfigs.dev
+		splitChunksConfig = splitChunksConfigs.prod
+	} else {
+		splitChunksConfig = config.experimental.granularChunks
+			? splitChunksConfigs.prodGranular
+			: splitChunksConfigs.prod
+	}
 
 	// Base Webpack configuration (main.js => {version}.build.js)
 	// http://webpack.github.io/docs/configuration.html
@@ -156,29 +269,9 @@ module.exports = function (config) {
 		// optimization.runtimeChunk: 'single' is to be used if there is only 1 entry file or you want only one runtime (all entry files get one runtime file)
 		optimization: {
 			runtimeChunk: 'single',
-			splitChunks: {
-				// This option enables smart code splitting. With it, webpack would extract the vendor code if it gets larger than 30 kB
-				// (before minification and gzip). It would also extract the common code – this is useful if your build produces several bundles
-				// (e.g. if you split your app into routes).
-				chunks: 'all',
-				cacheGroups: {
-					vendors: {
-						name: 'chunk-vendors',
-						test: /[\\/]node_modules[\\/]/,
-						priority: -10,
-						chunks: 'initial'
-					},
-					common: {
-						name: 'chunk-common',
-						// Minimum number of chunks that must share a module before splitting.
-						minChunks: 2,
-						// The priority of the `common` groups are negative so any `vendors` cache group takes higher priority (default 0).
-						priority: -20,
-						chunks: 'initial',
-						reuseExistingChunk: true
-					}
-				}
-			},
+			// runtimeChunk: { name: 'static/runtime/webpack.js' },
+			splitChunks: splitChunksConfig,
+			minimize: !config.isDebug,
 			// https://github.com/webpack-contrib/uglifyjs-webpack-plugin/issues/349
 			minimizer: [new TerserPlugin({
 				sourceMap: true,
