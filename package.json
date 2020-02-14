@@ -110,7 +110,7 @@
     "size-plugin": "2.0.1",
     "stack-trace": "0.0.10",
     "stack-utils": "2.0.1",
-    "stylelint": "13.0.0",
+    "stylelint": "13.2.0",
     "stylelint-formatter-pretty": "1.1.4",
     "terser-webpack-plugin": "2.3.2",
     "webpack": "4.41.5",
