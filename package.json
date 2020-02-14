@@ -112,7 +112,7 @@
     "stack-utils": "2.0.1",
     "stylelint": "13.0.0",
     "stylelint-formatter-pretty": "1.1.4",
-    "terser-webpack-plugin": "2.3.2",
+    "terser-webpack-plugin": "2.3.5",
     "webpack": "4.41.5",
     "webpack-bundle-analyzer": "3.6.0",
     "webpack-dev-middleware": "3.7.2",
