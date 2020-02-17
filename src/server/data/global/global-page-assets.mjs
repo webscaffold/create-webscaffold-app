@@ -1,15 +1,21 @@
-'use strict';
-const path = require('path');
-const fs = require('fs');
-const joi = require('joi');
-const config = require('../../config');
+import path from 'path';
+import fs from 'fs';
+import joi from 'joi';
+import * as config from '../../config';
 
 // Webpack assets file
-const webpackStaticAssetsObj = require(config.server.paths.assetsWebpackJSONFile);
-const webpackStaticAssetsObjLegacy = require(config.server.paths.assetsLegacyWebpackJSONFile);
-const stylesAssetsObj = require(config.server.paths.assetsStylesJSONFile);
+let webpackStaticAssetsObj;
+let webpackStaticAssetsObjLegacy;
+let stylesAssetsObj;
 let runtimeContent, runtimeContentLegacy;
 
+(async () => {
+	webpackStaticAssetsObj = await import(config.server.paths.assetsWebpackJSONFile);
+	webpackStaticAssetsObjLegacy = await import(config.server.paths.assetsLegacyWebpackJSONFile);
+	stylesAssetsObj = await import(config.server.paths.assetsStylesJSONFile);
+})();
+console.log(config.server.paths.assetsWebpackJSONFile);
+console.log(webpackStaticAssetsObj);
 if (webpackStaticAssetsObj.runtime) {
 	runtimeContent = fs.readFileSync(path.join(config.server.paths.staticAssets, webpackStaticAssetsObj.runtime.mjs), 'utf-8');
 }
@@ -31,7 +37,7 @@ const dataSchema = joi.object({
 	})
 }).unknown().required();
 
-module.exports = (script) => {
+export function globalPageAssets (script) {
 	const data = {
 		assets: {
 			styles: [],
@@ -61,4 +67,4 @@ module.exports = (script) => {
 	const dataVars = joi.attempt(data, dataSchema)
 
 	return dataVars;
-};
+}

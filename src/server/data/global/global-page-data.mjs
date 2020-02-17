@@ -1,6 +1,5 @@
-'use strict';
-const joi = require('joi');
-const config = require('../../config');
+import joi from 'joi';
+import * as config from '../../config';
 
 const dataSchema = joi.object({
 	isProd: joi.boolean().required(),
@@ -12,6 +11,4 @@ const data = {
 	domainName: process.env.APP_DOMAIN_NAME
 };
 
-const dataVars = joi.attempt(data, dataSchema)
-
-module.exports = dataVars;
+export const pageData = joi.attempt(data, dataSchema);

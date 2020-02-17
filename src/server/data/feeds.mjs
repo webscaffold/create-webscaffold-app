@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = [
+export const feedsList = [
 	// Personal blogs.
 	'https://philipwalton.com/atom.xml',
 	'https://ericbidelman.tumblr.com/rss',

@@ -1,9 +1,7 @@
-'use strict';
+import mime from 'mime';
+import { findEncoding } from '../util/encoding-selection';
 
-const mime = require('mime');
-const findEncoding = require('../util/encoding-selection').findEncoding;
-
-module.exports = function(options) {
+export const brotliCompression = function(options) {
 	const logger = options.logger;
 
 	logger.log('info', 'Using brotli redirects for JS and CSS files');

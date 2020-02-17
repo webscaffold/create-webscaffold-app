@@ -1,8 +1,8 @@
-'use strict';
-const path = require('path');
-const dotenv = require('dotenv');
+/* eslint-disable eslint-comments/disable-enable-pair, unicorn/prevent-abbreviations */
+import path from 'path';
+import dotenv from 'dotenv';
 
-module.exports = nodeEnv => {
+export const loadEnv = (nodeEnv) => {
 	const environmentSpecificLocalEnv = dotenv.config({
 		path: path.resolve(`.env.${nodeEnv}.local`),
 	});
@@ -22,3 +22,5 @@ module.exports = nodeEnv => {
 
 	return Object.assign({}, defaultEnv.parsed, environmentSpecificEnv.parsed, localEnv.parsed, environmentSpecificLocalEnv.parsed);
 };
+
+export default loadEnv(process.env.NODE_ENV);

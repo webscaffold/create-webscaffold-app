@@ -1,23 +1,19 @@
-'use strict'
-const fs = require('fs');
-const path = require('path');
-const http = require('http');
-// Using `https` until this lands https://github.com/expressjs/express/pull/3730 to use http2
-const https = require('https');
-const logProcessErrors = require('log-process-errors');
-const chalk = require('chalk');
-const loadEnv = require('./util/load-env');
+import './util/load-env';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+import path from 'path';
+import http from 'http';
+import https from 'https'; // Using `https` until this lands https://github.com/expressjs/express/pull/3730 to use http2
+import logProcessErrors from 'log-process-errors';
+import chalk from 'chalk';
+import { app } from './app';
+import router from './router/router';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url)); // eslint-disable-line
 
 // Show some ❤️ to Node.js process errors.
 // https://github.com/ehmicky/log-process-errors
 logProcessErrors();
-
-// Load .env files based on the rules defined in the docs
-loadEnv(process.env.NODE_ENV);
-
-// Express app
-const app = require('./app');
-const router = require('./router');
 
 // Express routes
 app.use(router);
