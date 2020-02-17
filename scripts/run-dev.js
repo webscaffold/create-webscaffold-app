@@ -65,13 +65,16 @@ module.exports = async function(options) {
 	]);
 
 	nodemon({
-		script: 'src/server/server.js',
+		script: 'src/server/server.mjs',
 		verbose: options.logLevel,
+		execMap: {
+			mjs: 'node --experimental-modules --es-module-specifier-resolution=node --experimental-json-modules'
+		},
 		watch: [
 			'./src/html',
 			'./src/server'
 		],
-		ext: 'js json marko'
+		ext: 'js mjs json marko'
 	});
 
 	nodemon.on('start', function () {

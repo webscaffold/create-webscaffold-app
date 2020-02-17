@@ -1,4 +1,3 @@
-'use strict';
 // https://github.com/tkoenig89/express-static-gzip/blob/master/util/encoding-selection.js
 
 /**
@@ -7,7 +6,7 @@
  * @param {{encodingName: string, fileExtension: string}[]} availableCompressions
  * @param {{string[]} preference
  */
-function findEncoding(acceptEncoding, availableCompressions, preference) {
+export function findEncoding(acceptEncoding, availableCompressions, preference) {
 	if (acceptEncoding) {
 		let sortedEncodingList = parseEncoding(acceptEncoding);
 		sortedEncodingList = takePreferenceIntoAccount(sortedEncodingList, preference);
@@ -83,7 +82,3 @@ function parseQuality(encoding) {
 		q: 1
 	};
 }
-
-module.exports = {
-	findEncoding: findEncoding
-};

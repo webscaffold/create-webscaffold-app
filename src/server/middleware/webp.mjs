@@ -1,8 +1,8 @@
-'use strict';
+import { fileURLToPath } from 'url';
+import path from 'path';
+import fs from 'fs';
 
-const path = require('path');
-const fs = require('fs');
-
+const __dirname = path.dirname(fileURLToPath(import.meta.url)); // eslint-disable-line
 let dirname = __dirname;
 
 // I have updated the func not to replace the current extension and just append .webp
@@ -22,7 +22,7 @@ function updateReqUrl(ext, req, res, next, pathname, extpos) {
 	});
 }
 
-module.exports = function(root) {
+export function webp(root) {
 	dirname = root;
 	return function(req, res, next) {
 		const parsed = new URL(req.url, `${req.protocol}://${req.headers.host}/`);

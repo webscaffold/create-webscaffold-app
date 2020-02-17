@@ -1,7 +1,6 @@
-'use strict';
 // const Joi = require('joi');
 
-function getPosts (req, res) {
+export function getPostsRouter (req, res) {
 	const posts = [
 		{
 			title: 'Page Lifecycle API - Philip Walton',
@@ -32,8 +31,4 @@ function getPosts (req, res) {
 	]
 
 	res.status(200).send(posts);
-}
-
-module.exports = {
-	getPosts
 }

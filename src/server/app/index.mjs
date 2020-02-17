@@ -1,38 +1,35 @@
-'use strict';
-
-const timestamp = require('time-stamp');
-const chalk = require('chalk');
-const express = require('express');
-// const sirv = require('sirv');
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const compression = require('compression');
-const responseTime = require('response-time');
-const lusca = require('lusca');
-const helmet = require('helmet');
-const PrettyError = require('pretty-error');
-const errorhandler = require('errorhandler');
-const expressRoutesLogger = require('morgan');
-const serverTiming = require('server-timing');
-
-const logger = require('../util/logger');
-const config = require('../config');
-const brotliCompression = require('../middleware/brotli-compression');
-const noopServiceWorkerMiddleware = require('../middleware/noop-service-worker-middleware');
+import timestamp from 'time-stamp';
+import chalk from 'chalk';
+import express from 'express';
+// import sirv from 'sirv';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import compression from 'compression';
+import responseTime from 'response-time';
+import lusca from 'lusca';
+import helmet from 'helmet';
+import PrettyError from 'pretty-error';
+import errorhandler from 'errorhandler';
+import expressRoutesLogger from 'morgan';
+import serverTiming from 'server-timing';
+import markoExpress from 'marko/express';
+import markoNodeRequire from 'marko/node-require';
+import { logger } from '../util/logger';
+import * as config from '../config';
+import { brotliCompression } from '../middleware/brotli-compression';
+import { createNoopServiceWorkerMiddleware } from '../middleware/noop-service-worker-middleware';
 
 // Express App with view engine via Marko
 // -----------------------------------------------------------------------------
 
 // Allow Node.js to require and load `.marko` files
-require('marko/node-require').install({
+markoNodeRequire.install({
 	extensions: ['.marko', '.html'],
 	compilerOptions: {
-		writeToDisk: config.isProd,
-		preserveWhitespace: config.isProd
+		writeToDisk: config.common.isProd,
+		preserveWhitespace: config.common.isProd
 	}
 });
-const markoExpress = require('marko/express');
 
 const app = express();
 
@@ -66,18 +63,8 @@ app.use(bodyParser.json());
 app.use(compression());
 
 // Session settings
-const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
-app.use(session({
-	name: 'sid',
-	resave: true,
-	saveUninitialized: true,
-	secret: process.env.SESSION_SECRET,
-	// store: '',
-	cookie: {
-		httpOnly: true,
-		maxAge: ONE_WEEK
-	} // Configure when sessions expires
-}));
+// const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
+// TODO: Add middleware sesstio back.
 
 // Extra (loggers, security)
 // -----------------------------------------------------------------------------
@@ -119,7 +106,7 @@ if (process.env.HTTPS_REDIRECT === 'true') {
 }
 
 // Return source maps in production only to requests passint then `X-SOURCE-MAP-TOKEN` header token (Sentry for example)
-if (config.isProd) {
+if (config.common.isProd) {
 	app.get(/\.js\.map/, (req, res, next) => {
 		const hedSourceMapToken = req.get('X-SOURCE-MAP-TOKEN');
 		const envSourceMapToken = process.env['X-SOURCE-MAP-TOKEN'];
@@ -147,9 +134,9 @@ if (config.isProd) {
 // We do this in development to avoid hitting the production cache if
 // it used the same host and port.
 // https://github.com/facebook/create-react-app/issues/2272#issuecomment-302832432
-if (!config.isProd) {
+if (!config.common.isProd) {
 	logger.log('debug', 'Using noop service worker middleware');
-	app.use(noopServiceWorkerMiddleware());
+	app.use(createNoopServiceWorkerMiddleware());
 }
 
 // Routes
@@ -191,4 +178,4 @@ if (process.env.NODE_ENV === 'development') {
 	app.use(errorhandler());
 }
 
-module.exports = app;
+export { app };
