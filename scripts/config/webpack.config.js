@@ -444,8 +444,6 @@ module.exports = function (config) {
 				clientsClaim: true,
 				skipWaiting: true,
 				exclude: [/\.map$/, /asset-manifest\.json$/],
-				globDirectory: path.resolve(cwd, config.paths.staticAssetsOutput),
-				globPatterns: ['**/*.{html,js,css}'],
 				swDest: path.join(path.resolve(cwd, config.paths.staticAssetsOutput), 'sw.js')
 			}),
 
