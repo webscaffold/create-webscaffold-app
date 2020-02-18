@@ -18,7 +18,7 @@ const serverTiming = require('server-timing');
 
 const logger = require('../util/logger');
 const config = require('../config');
-const brotliCompression = require('../middleware/brotli-compression');
+const middleware = require('../middleware');
 const noopServiceWorkerMiddleware = require('../middleware/noop-service-worker-middleware');
 
 // Express App with view engine via Marko
@@ -101,21 +101,13 @@ app.use(serverTiming());
 // app.use(webpMiddleware(config.server.paths.staticAssets));
 
 if (process.env.USE_BROTLI === 'true') {
-	app.use('/scripts/', brotliCompression({ logger: console }));
+	middleware.installBrotliCompression(app);
 }
 
 // Redirect to HTTPS automatically if options is set
 if (process.env.HTTPS_REDIRECT === 'true') {
 	logger.log('info', 'Redirecting HTTP requests to HTTPS');
-
-	app.use((req, res, next) => {
-		if (req.secure) {
-			next();
-			return;
-		}
-
-		res.redirect(301, `https://${req.hostname}${req.url}`);
-	});
+	middleware.installHTTPSRedirect(app);
 }
 
 // Return source maps in production only to requests passint then `X-SOURCE-MAP-TOKEN` header token (Sentry for example)

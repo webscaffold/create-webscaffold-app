@@ -3,13 +3,19 @@
 const mime = require('mime');
 const findEncoding = require('../util/encoding-selection').findEncoding;
 
-module.exports = function(options) {
-	const logger = options.logger;
+// TODO: Use the internal logger instead of console
+module.exports = function(app) {
+	console.log('info', 'Using brotli redirects for JS and CSS files');
 
-	logger.log('info', 'Using brotli redirects for JS and CSS files');
-
-	return function(request, response, next) {
-		logger.log('debug', `Brotli redirect for: ${request.url}`);
+	/**
+	 * Brotli request handler
+	 *
+	 * @param {object} request Express request object
+	 * @param {object} response Express response object
+	 * @param {Function} next Express next function
+	 */
+	function brotliRequestHandler(request, response, next) {
+		console.log('debug', `Brotli redirect for: ${request.url}`);
 
 		// Get browser's' supported encodings
 		const acceptEncoding = request.header('accept-encoding');
@@ -31,9 +37,11 @@ module.exports = function(options) {
 			response.setHeader('Content-Encoding', 'br');
 			response.setHeader('Content-Type', type);
 		} else {
-			logger.log('debug', `Brotli redirect failed: compressionType: ${JSON.stringify(compressionType)}`);
+			console.log('debug', `Brotli redirect failed: compressionType: ${JSON.stringify(compressionType)}`);
 		}
 
 		next();
 	}
+
+	app.use(brotliRequestHandler);
 };
