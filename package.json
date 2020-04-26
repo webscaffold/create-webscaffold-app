@@ -75,7 +75,7 @@
     "@babel/preset-env": "7.8.7",
     "@commitlint/config-conventional": "8.3.4",
     "@commitlint/prompt": "8.3.5",
-    "@radum/eslint-config": "2.1.0",
+    "@radum/eslint-config": "2.2.1",
     "@radum/stylelint-config": "2.0.0",
     "@webscaffold/task-browser-sync": "0.1.0-alpha.6",
     "@webscaffold/task-clean": "0.1.0-alpha.12",
