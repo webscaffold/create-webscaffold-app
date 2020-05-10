@@ -61,7 +61,7 @@
     "pretty-error": "2.2.0-rc.1",
     "raven-js": "3.27.2",
     "response-time": "2.3.2",
-    "server-timing": "3.1.1",
+    "server-timing": "3.2.1",
     "sirv": "0.4.2",
     "spdy": "4.0.2",
     "time-stamp": "2.2.0",
