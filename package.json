@@ -99,7 +99,7 @@
     "execa": "4.0.0",
     "figures": "3.2.0",
     "html-webpack-plugin": "4.2.0",
-    "husky": "4.2.3",
+    "husky": "4.2.5",
     "meow": "6.1.0",
     "nodemon": "2.0.2",
     "os": "0.1.1",
