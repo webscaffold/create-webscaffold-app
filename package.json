@@ -101,7 +101,7 @@
     "html-webpack-plugin": "4.2.0",
     "husky": "4.2.5",
     "meow": "6.1.0",
-    "nodemon": "2.0.2",
+    "nodemon": "2.0.3",
     "os": "0.1.1",
     "pnp-webpack-plugin": "1.6.4",
     "prettier": "1.19.1",
