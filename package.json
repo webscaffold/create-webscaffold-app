@@ -111,7 +111,7 @@
     "stack-trace": "0.0.10",
     "stack-utils": "2.0.1",
     "stylelint": "13.2.1",
-    "stylelint-formatter-pretty": "2.0.0",
+    "stylelint-formatter-pretty": "2.0.1",
     "terser-webpack-plugin": "2.3.5",
     "webpack": "4.42.0",
     "webpack-bundle-analyzer": "3.6.1",
