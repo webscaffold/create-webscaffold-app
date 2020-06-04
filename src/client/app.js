@@ -17,6 +17,13 @@ class App {
 
 		const posts = await this.getPosts(year, includeTweets);
 
+		// For testing babel output
+		const p1 = Promise.resolve();
+		const p2 = Promise.resolve();
+		Promise.allSettled([p1, p2]).finally(() => {
+			console.log('Done!');
+		});w
+
 		if (!PRE_RENDERED) {
 			this.renderPosts(posts, this.postsListContainer);
 		}
