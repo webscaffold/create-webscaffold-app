@@ -94,7 +94,7 @@
     "cross-env": "7.0.2",
     "directory-named-webpack-plugin": "4.0.1",
     "emittery": "0.7.0",
-    "eslint": "7.1.0",
+    "eslint": "7.12.1",
     "eslint-formatter-pretty": "3.0.1",
     "execa": "4.0.2",
     "figures": "3.2.0",
