@@ -62,7 +62,7 @@
     "raven-js": "3.27.2",
     "response-time": "2.3.2",
     "server-timing": "3.2.1",
-    "sirv": "0.4.6",
+    "sirv": "1.0.11",
     "spdy": "4.0.2",
     "time-stamp": "2.2.0",
     "winston": "3.2.1"
