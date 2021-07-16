@@ -85,7 +85,7 @@
     "@webscaffold/task-js-compiler": "0.1.0-alpha.7",
     "@webscaffold/task-watcher": "0.1.0-alpha.7",
     "assets-webpack-plugin": "3.9.12",
-    "ava": "3.8.2",
+    "ava": "3.15.0",
     "babel-loader": "8.1.0",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "commitizen": "4.1.2",
